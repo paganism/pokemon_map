@@ -17,12 +17,8 @@ class Pokemon(models.Model):
                                         null=True,
                                         related_name='next_pokemon',
                                         verbose_name='В кого эволюционирует')
-    previous_evolution = models.ForeignKey('Pokemon',
-                                            on_delete=models.SET_NULL,
-                                            blank=True,
-                                            null=True,
-                                            related_name='previous_pokemon',
-                                            verbose_name='Из кого эволюционирует')
+    element_type = models.ManyToManyField('PokemonElementType', related_name='element_type', verbose_name='Стихия')
+
 
     def __str__(self):
         return f'{self.title}'
@@ -42,3 +38,11 @@ class PokemonEntity(models.Model):
 
     def __str__(self):
         return f'{self.pokemon} # {self.id}'
+
+
+class PokemonElementType(models.Model):
+    title = models.CharField(max_length=20, default='')
+    #pokemon = models.ManyToManyField(Pokemon)
+
+    def __str__(self):
+        return f'{self.title}'

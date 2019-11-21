@@ -25,15 +25,15 @@
         <p><b>{{pokemon.title}}</b> (анг. {{pokemon.title_en}}, яп. {{pokemon.title_jp}}) — {{pokemon.description}}</p>
         <hr>
         <div class="mt-4">
-          {% if pokemon.next_evolution or pokemon.previous_evolution %}
+          {% if pokemon.next_evolution or previous_evolution %}
             <h4 class="mb-0">Эволюции покемона</h4>
             <div class="row">
-              {% if pokemon.previous_evolution %}
+              {% if previous_evolution %}
                 <div class="col-5 clearfix p-2 m-2">
                   <div class="img-thumbnail">
-                    <a href="{% url 'pokemon' pokemon.previous_evolution.id %}">
+                    <a href="{% url 'pokemon' previous_evolution.id %}">
                       <div class="d-flex justify-content-center">
-                        <img class="pull-left mr-2 float-left" src="{{pokemon.previous_evolution.image.url}}" style="height:50px; width:50px">
+                        <img class="pull-left mr-2 float-left" src="{{previous_evolution.image.url}}" style="height:50px; width:50px">
                         <p class="align-middle m-0" style="line-height:50px; font-size: 20px;">{{pokemon.previous_pokemon.title_ru}}</p>
                       </div>
                     </a>
@@ -61,7 +61,7 @@
           <hr>
           <div class="mt-4">
             <h4>Стихии покемона</h4>
-            {% for element in pokemon.element_type%}
+            {% for element in pokemon.element_type.all%}
               <div>
                 <img class="pull-left mr-2 float-left" style="height:20px;width:20px;" src="{{element.img}}">
                 <p>{{element.title}}, силён против: {{element.strong_against|join:", "}}</p>
