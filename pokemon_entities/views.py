@@ -67,14 +67,21 @@ def show_pokemon(request, pokemon_id):
     except Pokemon.DoesNotExist:
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
-    previous_evolution = pokemon.next_pokemon.filter(next_evolution=pokemon.id).first()
+    previous_evolution = pokemon.prev_pokemons.filter(next_evolution=pokemon.id).first()
 
+    element_types = pokemon.element_type.all()
+
+    strong = [el.strong_against.all() for el in element_types]
+    
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
-    for pokemon_entity in pokemon.poke.all():
+    for pokemon_entity in pokemon.pokemon.all():
         add_pokemon(
             folium_map, pokemon_entity.lat, pokemon_entity.lon,
             pokemon.title, request.build_absolute_uri(pokemon.image.url))
 
     return render(request, "pokemon.html", context={'map': folium_map._repr_html_(),
                                                     'pokemon': pokemon,
-                                                    'previous_evolution': previous_evolution})
+                                                    'previous_evolution': previous_evolution,
+                                                    'element_types': element_types,
+                                                    'strong_against': strong
+                                                    })
